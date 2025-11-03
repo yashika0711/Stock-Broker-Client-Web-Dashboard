@@ -13,29 +13,33 @@ const io = new Server(server, {
 
 let userSubscriptions = {};
 
-io.on("connection", (socket) => {
+iio.on("connection", (socket) => {
+  console.log("Client connected:", socket.id);
+
   socket.on("join", (email) => {
-    socket.email = email;
+    console.log(`User joined: ${email}`);
     userSubscriptions[email] = userSubscriptions[email] || [];
   });
 
   socket.on("subscribe", ({ email, ticker }) => {
+    if (!userSubscriptions[email]) userSubscriptions[email] = [];
     if (!userSubscriptions[email].includes(ticker)) {
       userSubscriptions[email].push(ticker);
+      console.log(`${email} subscribed to ${ticker}`);
     }
   });
-});
 
-setInterval(() => {
-  STOCKS.forEach((ticker) => {
-    prices[ticker] = (Math.random() * 1000 + 100).toFixed(2);
+  
+  socket.on("unsubscribe", ({ email, ticker }) => {
+    if (userSubscriptions[email]) {
+      userSubscriptions[email] = userSubscriptions[email].filter(
+        (t) => t !== ticker
+      );
+      console.log(`${email} unsubscribed from ${ticker}`);
+    }
   });
 
-  for (const [email, tickers] of Object.entries(userSubscriptions)) {
-    tickers.forEach((ticker) => {
-      io.emit("priceUpdate", { ticker, price: prices[ticker] });
-    });
-  }
-}, 1000);
-
-server.listen(4000, () => console.log("Server running on port 4000"));
+  socket.on("disconnect", () => {
+    console.log("Client disconnected:", socket.id);
+  });
+});

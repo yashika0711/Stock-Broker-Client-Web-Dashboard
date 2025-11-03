@@ -103,3 +103,30 @@ input[type="password"] {
   background-color: #f0f8ff;
 }
 
+
+.subscribe-btn {
+  margin: 5px;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+
+.subscribe-btn.subscribe {
+  background-color: #28a745;
+}
+.subscribe-btn.subscribe:hover {
+  background-color: #218838;
+}
+
+
+.subscribe-btn.unsubscribe {
+  background-color: #dc3545;
+}
+.subscribe-btn.unsubscribe:hover {
+  background-color: #c82333;
+}
