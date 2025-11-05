@@ -47,6 +47,7 @@ npm install socket.io
 
 In your project root:
 ```bash
+cd backend\server
 node index.js
 ```
 
